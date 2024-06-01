@@ -47,6 +47,10 @@ Logs specific study times for each study item.
 - The **StudyItems** table has a one-to-many relationship with the **StudySessions** table. One study item can have multiple study sessions recorded.
 
 
+- 勤怠アプリみたいにボタンで学習スタートと学習終わりを登録できる（登録し忘れた時のために手動で変更もできる）
+- 
+
+
 # What is Your Main Goal - Study Time Tracker
 
 ## Overview
