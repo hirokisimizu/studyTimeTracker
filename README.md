@@ -1,61 +1,94 @@
-ステップ 1: プロジェクトの計画
+## Database Design
 
-アプリがどのような機能を持つか
+### Users Table
+Stores user information.
 
-核となるテーマは，what is your main goal（app名）ユーザーが達成したいgoalに向けて，努力を積み上げていけるようなapp
+| Column Name | Data Type | Description                |
+|-------------|-----------|----------------------------|
+| id          | INT       | Primary key, auto-increment|
+| username    | VARCHAR   | Username                   |
+| email       | VARCHAR   | User's email address       |
+| password    | VARCHAR   | Hashed password            |
 
-機能
+### Goals Table
+Stores the different goal categories set by the user.
 
-ユーザーは勉強項目と勉強時間を記録できる
+| Column Name  | Data Type | Description                            |
+|--------------|-----------|----------------------------------------|
+| id           | INT       | Primary key, auto-increment            |
+| user_id      | INT       | Foreign key to Users table id          |
+| title        | VARCHAR   | Title of the goal category             |
+| description  | TEXT      | Detailed description of the goal       |
 
-ユーザーは勉強項目について重みづけを行うことができ，goalに対してimpactのある行動をどれだけできたか視覚的に分かりやすくする
+### StudyItems Table
+Records the study items that a user inputs under each goal category.
 
-どのようなユーザーインターフェースが適切か
+| Column Name  | Data Type | Description                              |
+|--------------|-----------|------------------------------------------|
+| id           | INT       | Primary key, auto-increment              |
+| goal_id      | INT       | Foreign key to Goals table id            |
+| title        | VARCHAR   | Title of the study item                  |
+| description  | TEXT      | Detailed description of the study item   |
+| weight       | INT       | Weight of the study item (impact on goal)|
 
-single page appを目指す
+### StudySessions Table
+Logs specific study times for each study item.
 
-とりあえず使用できるクライアントはpcのみ
+| Column Name  | Data Type | Description                        |
+|--------------|-----------|------------------------------------|
+| id           | INT       | Primary key, auto-increment        |
+| study_item_id| INT       | Foreign key to StudyItems table id |
+| duration     | INT       | Study duration in minutes          |
+| session_date | DATE      | Date of study session              |
 
-フロントエンドには何を使用するか
+### Relational Database Design
+- The **Users** table has a one-to-many relationship with the **Goals** table. One user can set multiple goal categories.
+- The **Goals** table has a one-to-many relationship with the **StudyItems** table. One goal can have multiple study items.
+- The **StudyItems** table has a one-to-many relationship with the **StudySessions** table. One study item can have multiple study sessions recorded.
 
-html, css, ts,React
 
-バックエンド
+# What is Your Main Goal - Study Time Tracker
 
-php, ts
+## Overview
+**What is Your Main Goal** is a single-page application that allows users to record and visually track their efforts towards achieving their study goals. Users can log their study activities and time spent, and assess how their actions impact their goals through weighted contributions.
 
-ステップ 2: 環境のセットアップ
+## Features
+- **Log Study Items and Time**: Users can record their daily study activities.
+- **Weight Activities**: Assign weights to each study activity to see how much it contributes to achieving goals.
+- **Visual Progress Display**: Graphically displays how study activities are helping to achieve goals.
 
-• Dockerのインストール（済み）• AWSアカウントの設定: AWSにログインし、必要なサービス（例: EC2, RDS, S3）へのアクセスを設定します。
+## Technology Stack
+- **Frontend**: HTML, CSS, TypeScript, React
+- **Backend**: PHP, TypeScript
+- **Database**: MySQL
+- **Infrastructure**: Docker, AWS (EC2, RDS, S3), ECS/EKS
 
-ステップ 3: アプリケーションの開発
+## Environment Setup
+1. **Docker**: Already installed. The application runs within Docker containers.
+2. **AWS Account**: Ensure access is configured for necessary AWS services.
 
-フロントエンドの開発: 
+## Local Development
+Before starting development, install dependencies with the following command:
+```
+npm install
+```
+To start the development server:
+```
+npm start
+```
+## Database Configuration
+Data is managed using MySQL. Configure the database settings in config/database.php.
 
-ユーザーが時間を入力し、記録を表示できるシンプルなインターフェースを作成。
+## API Endpoints
+The API provides the following endpoints:
 
-バックエンドの開発: 
+- POST /api/tasks: Registers a new study task.
+- GET /api/tasks: Retrieves registered study tasks.
+## Deployment
+Use the Dockerfile to build the container image for the application. After building, deploy to AWS ECS or EKS.
 
-入力されたデータを処理し、データベースに保存するAPIを開発。
+## Testing and Debugging
+Perform functional and load tests to ensure all features work as expected.
 
-データベースの設定: MySQLデータベースを使用して、時間のデータを管理。
-
-ステップ 4: Dockerを使用したデプロイメント
-
-Dockerfileの作成: アプリケーションをコンテナ化するためのDockerfileを作成。
-
-イメージのビルドとテスト: Dockerイメージをビルドし、ローカルでテストを実行。
-
-AWSへのデプロイ: DockerコンテナをAWSのECS（Elastic Container Service）またはEKS（Elastic Kubernetes Service）にデプロイ。
-
-ステップ 5: テストとデバッグ
-
-機能テスト: すべての機能が正しく動作するかテストします。
-
-負荷テスト: 複数のユーザーが同時に使用する場合のテストを行います。
-
-ステップ 6: ライブへの移行と監視
-
-本番環境への移行: テストをパスした後、アプリケーションを本番環境に移行します。
-
-監視とメンテナンス: アプリケーションのパフォーマンスを監視し、必要に応じてアップデートやバグ修正を行います。
+## Production
+After passing tests, migrate the application to the production environment. Monitor and maintain the application in production, performing updates and bug fixes as needed.
