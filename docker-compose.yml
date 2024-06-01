@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_container
+    restart: unless-stopped
+    volumes:
+      - .:/var/www/html
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0  # MySQL 8.0 は広く使用されており、ARM64サポートが含まれる可能性が高い
+    container_name: mysql_container
+    environment:
+      MYSQL_DATABASE: 'appdb'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'password'
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  node:
+    build:
+      context: .
+      dockerfile: NodeDockerfile # 上記で作成したDockerfileを指定
+    container_name: node_container
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
+    command: npm start
+    ports:
+      - "3000:3000"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
