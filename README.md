@@ -96,3 +96,42 @@ Perform functional and load tests to ensure all features work as expected.
 
 ## Production
 After passing tests, migrate the application to the production environment. Monitor and maintain the application in production, performing updates and bug fixes as needed.
+
+```
+study-time-tracker/
+├── migrations/ # データベースマイグレーションファイル
+│ ├── 01_create_users_table.sql # ユーザーテーブル作成
+│ ├── 02_create_goals_table.sql # ゴールテーブル作成
+│ ├── 03_create_study_items_table.sql # 学習項目テーブル作成
+│ └── 04_create_study_sessions_table.sql # 学習セッションテーブル作成
+│
+├── public/ # 静的ファイルとエントリーポイント
+│ ├── index.html # メインのHTMLファイル
+│ ├── css/ # CSSファイルディレクトリ
+│ │ └── style.css # スタイルシート
+│ └── js/ # JavaScriptファイルディレクトリ
+│ └── app.js # アプリケーションのJavaScript
+│
+├── src/ # アプリケーションのソースコード
+│ ├── config/ # 設定ファイルディレクトリ
+│ │ └── database.php # データベース設定
+│ ├── models/ # モデルファイルディレクトリ
+│ │ ├── User.php # ユーザーモデル
+│ │ ├── Goal.php # ゴールモデル
+│ │ ├── StudyItem.php # 学習項目モデル
+│ │ └── StudySession.php # 学習セッションモデル
+│ ├── controllers/ # コントローラディレクトリ
+│ │ ├── UserController.php # ユーザーコントローラ
+│ │ ├── GoalController.php # ゴールコントローラ
+│ │ ├── StudyItemController.php # 学習項目コントローラ
+│ │ └── StudySessionController.php # 学習セッションコントローラ
+│ └── utils/ # ユーティリティディレクトリ
+│ └── helpers.php # ヘルパーファイル
+│
+├── Dockerfile # Docker設定ファイル
+├── NodeDockerfile # Node.js用Docker設定ファイル
+├── docker-compose.yml # Docker Compose設定ファイル
+├── package.json # Node.jsプロジェクトメタデータと依存関係
+├── package-lock.json # Node.jsの厳密な依存関係のツリー
+└── README.md # プロジェクトの説明とドキュメント
+```
