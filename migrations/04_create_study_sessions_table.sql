@@ -1,7 +1,10 @@
-CREATE TABLE study_sessions_table (
+-- StudySessions Table
+CREATE TABLE StudySessions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     study_item_id INT NOT NULL,
-    start_time datetime NOT NULL,
-    end_time datetime NOT NULL,
-    Foreign Key (study_item_id) REFERENCES study_items(id)
+    duration INT NOT NULL,
+    session_date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    FOREIGN KEY (study_item_id) REFERENCES StudyItems(id)
 );
