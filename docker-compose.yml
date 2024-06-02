@@ -12,22 +12,25 @@ services:
       - app-network
 
   db:
-    image: mysql:8.0  # MySQL 8.0 は広く使用されており、ARM64サポートが含まれる可能性が高い
+    image: mysql:8.0
     container_name: mysql_container
     environment:
-      MYSQL_DATABASE: 'appdb'
+      MYSQL_DATABASE: 'study_time_tracker'
       MYSQL_USER: 'user'
       MYSQL_PASSWORD: 'password'
       MYSQL_ROOT_PASSWORD: 'password'
     volumes:
       - dbdata:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d  # マイグレーションファイルのマウント
     networks:
       - app-network
+    ports:
+      - "3307:3306"
 
   node:
     build:
       context: .
-      dockerfile: NodeDockerfile # 上記で作成したDockerfileを指定
+      dockerfile: NodeDockerfile
     container_name: node_container
     volumes:
       - .:/usr/src/app
